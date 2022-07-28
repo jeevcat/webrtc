@@ -1390,7 +1390,7 @@ type ICECandidateStats struct {
 	// it's possible that a connection will be bottlenecked by another type of network.
 	// For example, when using Wi-Fi tethering, the networkType of the relevant candidate
 	// would be "wifi", even when the next hop is over a cellular connection.
-	NetworkType NetworkType `json:"networkType"`
+	NetworkType string `json:"networkType"`
 
 	// IP is the IP address of the candidate, allowing for IPv4 addresses and
 	// IPv6 addresses, but fully qualified domain names (FQDNs) are not allowed.
