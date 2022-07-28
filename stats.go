@@ -1506,7 +1506,7 @@ type AudioSourceStats struct {
 	EchoReturnLossEnhancement float64 `json:"echoReturnLossEnhancement"`
 }
 
-// VideoSourceStats represents an audio track that is attached to one or more senders.
+// VideoSourceStats represents a vidio track that is attached to one or more senders.
 type VideoSourceStats struct {
 	// Timestamp is the timestamp associated with this object.
 	Timestamp StatsTimestamp `json:"timestamp"`
