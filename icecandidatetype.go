@@ -1,8 +1,8 @@
 package webrtc
 
 import (
+	"encoding/json"
 	"fmt"
-
 	"github.com/pion/ice/v2"
 )
 
@@ -91,4 +91,17 @@ func getCandidateType(candidateType ice.CandidateType) (ICECandidateType, error)
 		err := fmt.Errorf("%w: %s", errICEInvalidConvertCandidateType, candidateType.String())
 		return ICECandidateType(Unknown), err
 	}
+}
+
+func (t *ICECandidateType) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	candidateType, err := NewICECandidateType(s)
+	if err != nil {
+		return err
+	}
+	*t = candidateType
+	return nil
 }
