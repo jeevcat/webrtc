@@ -45,6 +45,7 @@ func TestStatsMarshal(t *testing.T) {
 	for _, test := range []Stats{
 		AudioReceiverStats{},
 		AudioSenderStats{},
+		AudioSourceStats{},
 		CertificateStats{},
 		CodecStats{},
 		DataChannelStats{},
@@ -54,9 +55,9 @@ func TestStatsMarshal(t *testing.T) {
 		MediaStreamStats{},
 		OutboundRTPStreamStats{},
 		PeerConnectionStats{},
+		RTPContributingSourceStats{},
 		RemoteInboundRTPStreamStats{},
 		RemoteOutboundRTPStreamStats{},
-		RTPContributingSourceStats{},
 		SenderAudioTrackAttachmentStats{},
 		SenderAudioTrackAttachmentStats{},
 		SenderVideoTrackAttachmentStats{},
@@ -64,6 +65,7 @@ func TestStatsMarshal(t *testing.T) {
 		VideoReceiverStats{},
 		VideoReceiverStats{},
 		VideoSenderStats{},
+		VideoSourceStats{},
 	} {
 		_, err := json.Marshal(test)
 		if err != nil {

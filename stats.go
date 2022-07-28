@@ -66,6 +66,9 @@ const (
 
 	// StatsTypeCertificate is used by CertificateStats.
 	StatsTypeCertificate StatsType = "certificate"
+
+	// StatsTypeMediaSource is used by AudioSourceStats or VideoSourceStats.
+	StatsTypeMediaSource StatsType = "media-source"
 )
 
 // StatsTimestamp is a timestamp represented by the floating point number of
@@ -1449,4 +1452,91 @@ type CertificateStats struct {
 	// in the certificate chain. If the current certificate is at the end of the chain
 	// (i.e. a self-signed certificate), this will not be set.
 	IssuerCertificateID string `json:"issuerCertificateId"`
+}
+
+// AudioSourceStats represents an audio track that is attached to one or more senders.
+type AudioSourceStats struct {
+	// Timestamp is the timestamp associated with this object.
+	Timestamp StatsTimestamp `json:"timestamp"`
+
+	// Type is the object's StatsType
+	Type StatsType `json:"type"`
+
+	// ID is a unique id that is associated with the component inspected to produce
+	// this Stats object. Two Stats objects will have the same ID if they were produced
+	// by inspecting the same underlying object.
+	ID string `json:"id"`
+
+	// TrackIdentifier represents the id property of the track.
+	TrackIdentifier string `json:"trackIdentifier"`
+
+	// Kind is "audio" for AudioSourceStats
+	Kind string `json:"kind"`
+
+	// AudioLevel represents the output audio level of the track.
+	//
+	// The value is a value between 0..1 (linear), where 1.0 represents 0 dBov,
+	// 0 represents silence, and 0.5 represents approximately 6 dBSPL change in
+	// the sound pressure level from 0 dBov.
+	//
+	// If the track is sourced from an Receiver, does no audio processing, has a
+	// constant level, and has a volume setting of 1.0, the audio level is expected
+	// to be the same as the audio level of the source SSRC, while if the volume setting
+	// is 0.5, the AudioLevel is expected to be half that value.
+	//
+	// For outgoing audio tracks, the AudioLevel is the level of the audio being sent.
+	AudioLevel float64 `json:"audioLevel"`
+
+	// TotalAudioEnergy is the total energy of all the audio samples sent/received
+	// for this object, calculated by duration * Math.pow(energy/maxEnergy, 2) for
+	// each audio sample seen.
+	TotalAudioEnergy float64 `json:"totalAudioEnergy"`
+
+	// TotalSamplesDuration represents the total duration in seconds of all samples
+	// that have sent or received (and thus counted by TotalSamplesSent or TotalSamplesReceived).
+	// Can be used with TotalAudioEnergy to compute an average audio level over different intervals.
+	TotalSamplesDuration float64 `json:"totalSamplesDuration"`
+
+	// EchoReturnLoss is only present while the sender is sending a track sourced from
+	// a microphone where echo cancellation is applied. Calculated in decibels.
+	EchoReturnLoss float64 `json:"echoReturnLoss"`
+
+	// EchoReturnLossEnhancement is only present while the sender is sending a track
+	// sourced from a microphone where echo cancellation is applied. Calculated in decibels.
+	EchoReturnLossEnhancement float64 `json:"echoReturnLossEnhancement"`
+}
+
+// VideoSourceStats represents an audio track that is attached to one or more senders.
+type VideoSourceStats struct {
+	// Timestamp is the timestamp associated with this object.
+	Timestamp StatsTimestamp `json:"timestamp"`
+
+	// Type is the object's StatsType
+	Type StatsType `json:"type"`
+
+	// ID is a unique id that is associated with the component inspected to produce
+	// this Stats object. Two Stats objects will have the same ID if they were produced
+	// by inspecting the same underlying object.
+	ID string `json:"id"`
+
+	// TrackIdentifier represents the id property of the track.
+	TrackIdentifier string `json:"trackIdentifier"`
+
+	// Kind is "video" for VidioSourceStats
+	Kind string `json:"kind"`
+
+	// Width represents the width, in pixels, of the last frame originating from this source.
+	// Before a frame has been produced this member does not exist.
+	Width uint32 `json:"width"`
+
+	// Height represents the height, in pixels, of the last frame originating from this source.
+	// Before a frame has been produced this member does not exist.
+	Height uint32 `json:"height"`
+
+	// Frames represents the total number of frames originating from this source.
+	Frames uint32 `json:"frames"`
+
+	// FramesPerSecond represents the number of frames originating from this source, measured
+	// during the last second. For the first second of this object's lifetime this member does not exist.
+	FramesPerSecond float64 `json:"framesPerSecond"`
 }
