@@ -1,5 +1,7 @@
 package webrtc
 
+import "encoding/json"
+
 // DataChannelState indicates the state of a data channel.
 type DataChannelState int
 
@@ -58,4 +60,12 @@ func (t DataChannelState) String() string {
 	default:
 		return ErrUnknownType.Error()
 	}
+}
+func (t *DataChannelState) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	*t = newDataChannelState(s)
+	return nil
 }
