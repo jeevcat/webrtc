@@ -61,6 +61,7 @@ func (t DataChannelState) String() string {
 		return ErrUnknownType.Error()
 	}
 }
+
 func (t *DataChannelState) UnmarshalJSON(data []byte) error {
 	var s string
 	if err := json.Unmarshal(data, &s); err != nil {

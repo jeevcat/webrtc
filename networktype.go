@@ -1,6 +1,7 @@
 package webrtc
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/pion/ice/v2"
@@ -101,4 +102,17 @@ func getNetworkType(iceNetworkType ice.NetworkType) (NetworkType, error) {
 	default:
 		return NetworkType(Unknown), fmt.Errorf("%w: %s", errNetworkTypeUnknown, iceNetworkType.String())
 	}
+}
+
+func (t *NetworkType) UnmarshalJSON(data []byte) error {
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return err
+	}
+	networkType, err := NewNetworkType(s)
+	if err != nil {
+		return err
+	}
+	*t = networkType
+	return nil
 }
